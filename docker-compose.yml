@@ -5,9 +5,10 @@ services:
     restart: always
     container_name: bid-buddy-db
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
       POSTGRES_PASSWORD: example
+      POSTGRES_DB: mydatabase
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
