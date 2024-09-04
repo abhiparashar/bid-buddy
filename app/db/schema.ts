@@ -99,4 +99,7 @@ export const bids = pgTable("bb-bids", {
 export const items = pgTable("bb-items", {
   id: text("id").notNull(),
   name: text("name").notNull(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
 });

@@ -5,22 +5,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { revalidatePath } from "next/cache";
 import SignIn from "./components/signIn";
-import { getServerSession } from "next-auth";
 import { v4 as uuidv4 } from "uuid";
-import { useSession } from "next-auth/react";
+import { auth } from "@/lib/auth";
+import SignOut from "./components/signOut";
 
 export default async function Home() {
   const items = await database.query.items.findMany();
-  console.log(items);
+  const session = await auth();
   return (
     <main className="container mx-auto py-12">
-      {<SignIn />}
+      {session ? <SignOut /> : <SignIn />}
       <form
         action={async (formData: FormData) => {
           "use server";
           await database?.insert(itemsSchema).values({
             id: uuidv4(),
             name: formData.get("name") as string,
+            userId: session?.user?.id || "",
           });
           revalidatePath("/");
         }}
@@ -30,6 +31,7 @@ export default async function Home() {
           Post your Item
         </Button>
       </form>
+      {`Hi ${session?.user?.name}`}
       {items.map((item) => {
         return <div key={item.id}>{item.name}</div>;
       })}
