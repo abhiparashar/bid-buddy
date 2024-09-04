@@ -75,7 +75,6 @@ export const verificationTokens = pgTable(
 export const authenticators = pgTable(
   "authenticator",
   {
-    credentialID: text("credentialID").notNull().unique(),
     userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
@@ -88,11 +87,16 @@ export const authenticators = pgTable(
   },
   (authenticator) => ({
     compositePK: primaryKey({
-      columns: [authenticator.userId, authenticator.credentialID],
+      columns: [authenticator.userId],
     }),
   })
 );
 
 export const bids = pgTable("bb-bids", {
   id: serial("id").primaryKey(),
+});
+
+export const items = pgTable("bb-items", {
+  id: text("id").notNull(),
+  name: text("name").notNull(),
 });
