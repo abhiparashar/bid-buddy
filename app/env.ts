@@ -6,6 +6,8 @@ export const env = createEnv({
     NODE_ENV: z.string().min(1),
     GITHUB_ID: z.string().min(1),
     GITHUB_SECRET: z.string().min(1),
+    AUTH_DRIZZLE_URL: z.string().min(1),
+    AUTH_SECRET: z.string().min(1),
   },
   client: {},
   runtimeEnv: {
@@ -15,5 +17,7 @@ export const env = createEnv({
       "postgres://postgres:password@localhost:5433/mydatabase",
     GITHUB_ID: "Ov23liyUpezlkmuiMAZf",
     GITHUB_SECRET: "e90a9110deb760a5ea6c5326548eb9defcb7822d",
+    AUTH_DRIZZLE_URL: "postgres://postgres:password@localhost:5433/mydatabase",
+    AUTH_SECRET: "LdyJhBTDMIudVu6ZzmBHJij8nsortrc0JZuS7BUtXfY=",
   },
 });
