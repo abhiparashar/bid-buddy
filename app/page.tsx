@@ -10,6 +10,7 @@ export default async function Home() {
           return (
             <div className="border p-8 rounded-xl" key={item.id}>
               {item.name}
+              <div>startingPrice:${item.startingPrice / 100}</div>
             </div>
           );
         })}
