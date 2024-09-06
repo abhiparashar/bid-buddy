@@ -10,9 +10,21 @@ export default async function CreatePage() {
         className="flex flex-col border p-8 rounded-xl space-y-4 max-w-lg"
         action={createItemActions}
       >
-        <Input className="max-w-lg" name="name" placeholder="item-name" />
+        <Input
+          required
+          className="max-w-lg"
+          name="name"
+          placeholder="item-name"
+        />
+        <Input
+          required
+          className="max-w-lg"
+          name="startingPrice"
+          type="number"
+          placeholder="what is your starting price"
+        />
         <Button className="self-end" variant="default" type="submit">
-          Post your Item
+          Post Item
         </Button>
       </form>
     </main>
