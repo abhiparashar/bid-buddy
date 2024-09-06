@@ -11,10 +11,18 @@ async function Header() {
   return (
     <div className="bg-gray-200 py-2">
       <div className="container flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-1 hover:underline">
-          <Image src={logo} alt="logo" width="50" height="50" />
-          Bidbuddy.com
-        </Link>
+        <div className="flex items-center gap-12">
+          <Link href="/" className="flex items-center gap-1 hover:underline">
+            <Image src={logo} alt="logo" width="50" height="50" />
+            Bidbuddy.com
+          </Link>
+          <Link
+            href="/items/create"
+            className="flex items-center gap-1 hover:underline"
+          >
+            Auction an item
+          </Link>
+        </div>
         <div className="flex items-center gap-4">
           <div>{session?.user?.name}</div>
           <div>{session ? <SignOut /> : <SignIn />}</div>
