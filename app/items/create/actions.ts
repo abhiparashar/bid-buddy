@@ -18,7 +18,7 @@ export async function createItemActions({
 }: {
   fileName: string;
   name: string;
-  startingPrice: string;
+  startingPrice: number;
 }) {
   const session = await auth();
   const user = session?.user;
@@ -31,7 +31,7 @@ export async function createItemActions({
   await database?.insert(itemsSchema).values({
     id: uuidv4(),
     name,
-    startingPrice: parseFloat(startingPrice),
+    startingPrice,
     fileKey: fileName,
     userId: user.id,
   });
