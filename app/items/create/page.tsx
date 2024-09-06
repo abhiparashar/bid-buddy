@@ -23,6 +23,7 @@ export default async function CreatePage() {
           type="number"
           placeholder="what is your starting price"
         />
+        <Input type="file" name="file" />
         <Button className="self-end" variant="default" type="submit">
           Post Item
         </Button>
