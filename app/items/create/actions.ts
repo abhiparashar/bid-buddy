@@ -2,11 +2,24 @@
 import { database } from "@/app/db/database";
 import { items as itemsSchema } from "@/app/db/schema";
 import { auth } from "@/lib/auth";
+import { getSignedUrlobjectForS3Object } from "@/lib/s3";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
-export async function createItemActions(formData: FormData) {
+export async function createUploadUrlAction(key: string, type: string) {
+  return await getSignedUrlobjectForS3Object(key, type);
+}
+
+export async function createItemActions({
+  fileName,
+  name,
+  startingPrice,
+}: {
+  fileName: string;
+  name: string;
+  startingPrice: string;
+}) {
   const session = await auth();
   const user = session?.user;
   if (!session) {
@@ -15,14 +28,11 @@ export async function createItemActions(formData: FormData) {
   if (!user || !user.id) {
     throw new Error("unauthorized user");
   }
-  const startingPrice = formData.get("startingPrice") as string;
-  const priceInCents = Math.round(parseFloat(startingPrice) * 100);
-  const file = formData.get("file");
-  console.log(file, "fileName");
   await database?.insert(itemsSchema).values({
     id: uuidv4(),
-    name: formData.get("name") as string,
-    startingPrice: priceInCents,
+    name,
+    startingPrice: parseFloat(startingPrice),
+    fileKey: fileName,
     userId: user.id,
   });
   revalidatePath("/");

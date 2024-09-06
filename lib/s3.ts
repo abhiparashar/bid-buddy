@@ -1,10 +1,4 @@
-import {
-  S3Client,
-  ListBucketsCommand,
-  ListObjectsV2Command,
-  GetObjectCommand,
-  PutObjectCommand,
-} from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const s3Client = new S3Client({
@@ -17,10 +11,10 @@ const s3Client = new S3Client({
   },
 });
 
-export async function getSignedUrlobjectForS3Object(key: string) {
+export async function getSignedUrlobjectForS3Object(key: string, type: string) {
   return await getSignedUrl(
     s3Client,
-    new GetObjectCommand({ Bucket: "bid-buddy", Key: key }),
+    new PutObjectCommand({ Bucket: "bid-buddy", Key: key, ContentType: type }),
     { expiresIn: 3600 }
   );
 }
