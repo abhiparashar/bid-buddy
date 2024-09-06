@@ -20,7 +20,7 @@ const s3Client = new S3Client({
 export async function getSignedUrlobjectForS3Object(key: string) {
   return await getSignedUrl(
     s3Client,
-    new GetObjectCommand({ Bucket: "bud-buddy", Key: key }),
+    new GetObjectCommand({ Bucket: "bid-buddy", Key: key }),
     { expiresIn: 3600 }
   );
 }
