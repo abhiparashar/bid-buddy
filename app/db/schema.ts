@@ -105,3 +105,5 @@ export const items = pgTable("bb-items", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
 });
+
+export type Item = typeof items.$inferSelect;
