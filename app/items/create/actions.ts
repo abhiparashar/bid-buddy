@@ -23,10 +23,10 @@ export async function createItemActions({
   const session = await auth();
   const user = session?.user;
   if (!session) {
-    throw new Error("unauthorized user");
+    throw new Error("Unauthorized user");
   }
   if (!user || !user.id) {
-    throw new Error("unauthorized user");
+    throw new Error("Unauthorized user");
   }
   await database?.insert(itemsSchema).values({
     id: uuidv4(),

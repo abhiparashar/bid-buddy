@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React from "react";
 import logo from "../../public/logo.png";
-import SignOut from "./signOut";
 import SignIn from "./signIn";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
+import { SignOut } from "./signOut";
 
 async function Header() {
   const session = await auth();
@@ -20,7 +20,19 @@ async function Header() {
             href="/items/create"
             className="flex items-center gap-1 hover:underline"
           >
+            All Auctions
+          </Link>
+          <Link
+            href="/items/create"
+            className="flex items-center gap-1 hover:underline"
+          >
             Auction an item
+          </Link>
+          <Link
+            href="/auctions"
+            className="flex items-center gap-1 hover:underline"
+          >
+            My Auctions
           </Link>
         </div>
         <div className="flex items-center gap-4">
