@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createItemActions, createUploadUrlAction } from "./actions";
+import { pageTitle } from "@/app/stryles";
 
 export default function CreatePage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,8 +51,8 @@ export default function CreatePage() {
   };
 
   return (
-    <main className="container mx-auto py-12 space-y-4">
-      <h1 className="text-4xl font-bold mb-2">Post an item </h1>
+    <main className="space-y-4">
+      <h1 className={`${pageTitle} mb-2`}>Post an item </h1>
       <form
         className="flex flex-col border p-8 rounded-xl space-y-4 max-w-lg"
         onSubmit={handleSubmit}

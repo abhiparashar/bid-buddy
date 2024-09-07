@@ -2,6 +2,8 @@ import React from "react";
 import { Item } from "../db/schema";
 import Image from "next/image";
 import { getImageUrl } from "../util/files";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function ItemCards({ item }: { item: Item }) {
   return (
@@ -22,6 +24,9 @@ function ItemCards({ item }: { item: Item }) {
       <p className="text-lg">
         startingPrice: ${(item.startingPrice / 100).toFixed(2)}
       </p>
+      <Button asChild>
+        <Link href={`/items/${item.id}`}>Place bid</Link>
+      </Button>
     </div>
   );
 }
