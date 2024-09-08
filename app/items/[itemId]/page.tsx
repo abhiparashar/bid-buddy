@@ -8,6 +8,7 @@ import Link from "next/link";
 import notFoundImg from "../../../public/undraw_delivery_truck.svg";
 import { getImageUrl } from "@/app/util/files";
 import { formatDistance } from "date-fns";
+import { convertToDollar } from "@/app/util/currency";
 
 function formatTimeStamp(timestamp: Date) {
   return formatDistance(timestamp, new Date(), {
@@ -39,26 +40,28 @@ export default async function ItemPage({
       </div>
     );
 
-  const bidItems = [
-    {
-      id: 1,
-      amount: 100,
-      userName: "Alice",
-      timestamp: new Date(),
-    },
-    {
-      id: 2,
-      amount: 200,
-      userName: "Bob",
-      timestamp: new Date(),
-    },
-    {
-      id: 3,
-      amount: 300,
-      userName: "Charlie",
-      timestamp: new Date(),
-    },
-  ];
+  // const bidItems = [
+  //   {
+  //     id: 1,
+  //     amount: 100,
+  //     userName: "Alice",
+  //     timestamp: new Date(),
+  //   },
+  //   {
+  //     id: 2,
+  //     amount: 200,
+  //     userName: "Bob",
+  //     timestamp: new Date(),
+  //   },
+  //   {
+  //     id: 3,
+  //     amount: 300,
+  //     userName: "Charlie",
+  //     timestamp: new Date(),
+  //   },
+  // ];
+  const bidItems: any[] = [];
+  const hasBids = bidItems.length > 0;
   return (
     <main className="space-y-4">
       <div className="flex gap-8">
@@ -76,28 +79,56 @@ export default async function ItemPage({
             width={400}
             className="rounded-xl"
           />
-          <div className="text-xl">
+          <div className="text-xl space-y-4">
             Starting Prcie of{" "}
-            <span className="font-bold">${item.startingPrice}</span>
+            <span className="font-bold">
+              ${convertToDollar(item.startingPrice)}
+            </span>
+          </div>
+          <div>
+            Bid interval{" "}
+            <span className="font-bold">
+              ${convertToDollar(item.bidInterval)}
+            </span>
           </div>
         </div>
         <div className="space-y-6 flex-1">
           <h2 className="text-2xl font-bold">Current bids</h2>
-          <ul className="space-y-4">
-            {bidItems.map((bidItem) => {
-              return (
-                <li key={bidItem.id} className="bg-gray-100 rounded-xl p-8">
-                  <div className="flex gap-4">
-                    <div>
-                      <span className="font-bold">${bidItem.amount}</span> by{" "}
-                      <span className="font-bold">{bidItem.userName}</span>{" "}
-                    </div>
-                    <div>{formatTimeStamp(bidItem.timestamp)}</div>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+          {hasBids ? (
+            <>
+              <ul className="space-y-4">
+                {bidItems.map((bidItem) => {
+                  return (
+                    <li key={bidItem.id} className="bg-gray-100 rounded-xl p-8">
+                      <div className="flex gap-4">
+                        <div>
+                          <span className="font-bold">${bidItem.amount}</span>{" "}
+                          by{" "}
+                          <span className="font-bold">{bidItem.userName}</span>{" "}
+                        </div>
+                        <div>{formatTimeStamp(bidItem.timestamp)}</div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-col items-center gap-8 bg-gray-100 rounded-xl p-12">
+                <Image
+                  src={notFoundImg}
+                  width={400}
+                  height={400}
+                  alt="not-found"
+                />
+                <h2>No bids yet</h2>
+                <Button asChild>
+                  <Link href={""}>Place a bid</Link>
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </main>

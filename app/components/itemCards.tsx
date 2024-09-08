@@ -4,6 +4,7 @@ import Image from "next/image";
 import { getImageUrl } from "../util/files";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { convertToDollar } from "../util/currency";
 
 function ItemCards({ item }: { item: Item }) {
   return (
@@ -21,7 +22,7 @@ function ItemCards({ item }: { item: Item }) {
       />
       <h2 className="text-xl font-bold">{item.name}</h2>
       <p className="text-lg">
-        startingPrice: ${(item.startingPrice / 100).toFixed(2)}
+        startingPrice: ${convertToDollar(item.startingPrice)}
       </p>
       <Button asChild>
         <Link href={`/items/${item.id}`}>Place bid</Link>

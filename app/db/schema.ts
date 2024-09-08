@@ -104,6 +104,7 @@ export const items = pgTable("bb-items", {
   userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  bidInterval: integer("bidInterval").notNull().default(100),
 });
 
 export type Item = typeof items.$inferSelect;
