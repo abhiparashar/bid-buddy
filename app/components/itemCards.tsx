@@ -11,15 +11,14 @@ function ItemCards({ item }: { item: Item }) {
       className="flex flex-col items-center border p-8 rounded-xl space-y-2"
       key={item.id}
     >
-      <div style={{ position: "relative", width: "200px", height: "200px" }}>
-        <Image
-          src={getImageUrl(item.fileKey)}
-          alt={item.name}
-          layout="fill"
-          objectFit="cover"
-          unoptimized
-        />
-      </div>
+      <Image
+        src={getImageUrl(item.fileKey)}
+        alt={item.name}
+        objectFit="cover"
+        unoptimized
+        height={200}
+        width={200}
+      />
       <h2 className="text-xl font-bold">{item.name}</h2>
       <p className="text-lg">
         startingPrice: ${(item.startingPrice / 100).toFixed(2)}
