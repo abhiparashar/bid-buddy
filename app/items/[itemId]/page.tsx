@@ -40,27 +40,27 @@ export default async function ItemPage({
       </div>
     );
 
-  // const bidItems = [
-  //   {
-  //     id: 1,
-  //     amount: 100,
-  //     userName: "Alice",
-  //     timestamp: new Date(),
-  //   },
-  //   {
-  //     id: 2,
-  //     amount: 200,
-  //     userName: "Bob",
-  //     timestamp: new Date(),
-  //   },
-  //   {
-  //     id: 3,
-  //     amount: 300,
-  //     userName: "Charlie",
-  //     timestamp: new Date(),
-  //   },
-  // ];
-  const bidItems: any[] = [];
+  const bidItems = [
+    {
+      id: 1,
+      amount: 100,
+      userName: "Alice",
+      timestamp: new Date(),
+    },
+    {
+      id: 2,
+      amount: 200,
+      userName: "Bob",
+      timestamp: new Date(),
+    },
+    {
+      id: 3,
+      amount: 300,
+      userName: "Charlie",
+      timestamp: new Date(),
+    },
+  ];
+  // const bidItems: any[] = [];
   const hasBids = bidItems.length > 0;
   return (
     <main className="space-y-4">

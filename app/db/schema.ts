@@ -97,7 +97,7 @@ export const bids = pgTable("bb-bids", {
 });
 
 export const items = pgTable("bb-items", {
-  id: text("id").notNull(),
+  id: text("id").notNull().primaryKey(),
   name: text("name").notNull(),
   startingPrice: integer("startingPrice").notNull().default(0),
   fileKey: text("fileKey").notNull(),
