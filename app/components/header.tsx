@@ -26,7 +26,9 @@ function Header() {
   const handleSignOut = async () => {
     // Clear Knock authentication before signing out
     // knockClient.deauthenticate();
-    await signOut();
+    await signOut({
+      callbackUrl: "/",
+    });
   };
 
   return (
@@ -37,7 +39,7 @@ function Header() {
             <Image src={logo} alt="logo" width="50" height="50" />
             Bidbuddy.com
           </Link>
-          {status === "authenticated" && (
+          {status === "authenticated" && session && (
             <>
               <Link
                 href="/items/create"
@@ -61,7 +63,7 @@ function Header() {
           )}
         </div>
         <div className="flex items-center gap-4">
-          {status === "authenticated" && (
+          {status === "authenticated" && session && (
             <>
               <NotificationIconButton
                 ref={notifButtonRef}
@@ -73,6 +75,15 @@ function Header() {
                 onClose={() => setIsVisible(false)}
               />
             </>
+          )}
+          {session?.user.image && (
+            <Image
+              src={session?.user.image}
+              alt={"avatar image"}
+              height={50}
+              width={50}
+              className="rounded-full"
+            />
           )}
           <div className="font-semibold">{session?.user?.name}</div>
           <div>
