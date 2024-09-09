@@ -10,6 +10,7 @@ import { getImageUrl } from "@/app/util/files";
 import { formatDistance } from "date-fns";
 import { convertToDollar } from "@/app/util/currency";
 import { createBidAction } from "./actions";
+import { auth } from "@/lib/auth";
 
 function formatTimeStamp(timestamp: Date) {
   return formatDistance(timestamp, new Date(), {
@@ -22,6 +23,8 @@ export default async function ItemPage({
 }: {
   params: { itemId: string };
 }) {
+  const session = await auth();
+  const userId = session?.user?.id;
   const item = await database.query.items.findFirst({
     where: eq(items.id, parseInt(itemId)),
   });
@@ -95,7 +98,7 @@ export default async function ItemPage({
                 await createBidAction(item.id);
               }}
             >
-              <Button>Place a bid</Button>
+              {userId && <Button>Place a bid</Button>}
             </form>
           </div>
           {hasBids ? (
