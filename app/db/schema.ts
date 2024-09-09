@@ -92,12 +92,8 @@ export const authenticators = pgTable(
   })
 );
 
-export const bids = pgTable("bb-bids", {
-  id: serial("id").primaryKey(),
-});
-
 export const items = pgTable("bb-items", {
-  id: text("id").notNull().primaryKey(),
+  id: serial("id").notNull().primaryKey(),
   name: text("name").notNull(),
   startingPrice: integer("startingPrice").notNull().default(0),
   fileKey: text("fileKey").notNull(),
@@ -105,6 +101,17 @@ export const items = pgTable("bb-items", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   bidInterval: integer("bidInterval").notNull().default(100),
+});
+
+export const bids = pgTable("bb-bids", {
+  id: serial("id").primaryKey(),
+  amount: integer("amount").notNull(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  itemId: serial("itemId")
+    .notNull()
+    .references(() => items.id, { onDelete: "cascade" }),
 });
 
 export type Item = typeof items.$inferSelect;

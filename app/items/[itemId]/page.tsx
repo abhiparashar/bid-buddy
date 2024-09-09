@@ -22,7 +22,7 @@ export default async function ItemPage({
   params: { itemId: string };
 }) {
   const item = await database.query.items.findFirst({
-    where: eq(items.id, itemId),
+    where: eq(items.id, parseInt(itemId)),
   });
   if (!item || !item.name)
     return (
