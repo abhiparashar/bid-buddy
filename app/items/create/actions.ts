@@ -29,7 +29,6 @@ export async function createItemActions({
     throw new Error("Unauthorized user");
   }
   await database?.insert(itemsSchema).values({
-    id: uuidv4(),
     name,
     startingPrice,
     fileKey: fileName,
