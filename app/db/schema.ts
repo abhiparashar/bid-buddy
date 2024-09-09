@@ -10,6 +10,7 @@ import {
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import type { AdapterAccount } from "next-auth/adapters";
+import { relations } from "drizzle-orm";
 
 const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle";
 const pool = postgres(connectionString, { max: 1 });
@@ -113,6 +114,14 @@ export const bids = pgTable("bb-bids", {
   itemId: serial("itemId")
     .notNull()
     .references(() => items.id, { onDelete: "cascade" }),
+  timestamp: timestamp("timestamp", { mode: "date" }).notNull(),
 });
+
+export const usersRelations = relations(bids, ({ one }) => ({
+  user: one(users, {
+    fields: [bids.userId],
+    references: [users.id],
+  }),
+}));
 
 export type Item = typeof items.$inferSelect;

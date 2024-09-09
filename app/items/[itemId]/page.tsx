@@ -1,14 +1,15 @@
 import { database } from "@/app/db/database";
-import { items } from "@/app/db/schema";
+import { bids, items } from "@/app/db/schema";
 import { pageTitle } from "@/app/stryles";
 import { Button } from "@/components/ui/button";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import Image from "next/image";
 import Link from "next/link";
 import notFoundImg from "../../../public/undraw_delivery_truck.svg";
 import { getImageUrl } from "@/app/util/files";
 import { formatDistance } from "date-fns";
 import { convertToDollar } from "@/app/util/currency";
+import { createBidAction } from "./actions";
 
 function formatTimeStamp(timestamp: Date) {
   return formatDistance(timestamp, new Date(), {
@@ -40,32 +41,24 @@ export default async function ItemPage({
       </div>
     );
 
-  const bidItems = [
-    {
-      id: 1,
-      amount: 100,
-      userName: "Alice",
-      timestamp: new Date(),
+  const allBids = await database.query.bids.findMany({
+    where: eq(bids.itemId, parseInt(itemId)),
+    orderBy: desc(bids.id),
+    with: {
+      user: {
+        columns: {
+          image: true,
+          name: true,
+        },
+      },
     },
-    {
-      id: 2,
-      amount: 200,
-      userName: "Bob",
-      timestamp: new Date(),
-    },
-    {
-      id: 3,
-      amount: 300,
-      userName: "Charlie",
-      timestamp: new Date(),
-    },
-  ];
-  // const bidItems: any[] = [];
-  const hasBids = bidItems.length > 0;
+  });
+
+  const hasBids = allBids.length > 0;
   return (
     <main className="space-y-4">
       <div className="flex gap-8">
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 bg-gray-100 p-8 h-auto">
           <h1 className={pageTitle}>
             <span className="font-normal">Auction for </span>
             {item.name}
@@ -93,18 +86,28 @@ export default async function ItemPage({
           </div>
         </div>
         <div className="space-y-6 flex-1">
-          <h2 className="text-2xl font-bold">Current bids</h2>
+          <div className="flex justify-between">
+            <h2 className="text-2xl font-bold">Current bids</h2>
+            <form
+              action={async () => {
+                "use server";
+                await createBidAction(item.id);
+              }}
+            >
+              <Button>Place a bid</Button>
+            </form>
+          </div>
           {hasBids ? (
             <>
               <ul className="space-y-4">
-                {bidItems.map((bidItem) => {
+                {allBids.map((bidItem) => {
                   return (
                     <li key={bidItem.id} className="bg-gray-100 rounded-xl p-8">
                       <div className="flex gap-4">
                         <div>
                           <span className="font-bold">${bidItem.amount}</span>{" "}
                           by{" "}
-                          <span className="font-bold">{bidItem.userName}</span>{" "}
+                          <span className="font-bold">{bidItem.user.name}</span>{" "}
                         </div>
                         <div>{formatTimeStamp(bidItem.timestamp)}</div>
                       </div>
@@ -115,7 +118,7 @@ export default async function ItemPage({
             </>
           ) : (
             <>
-              <div className="flex flex-col items-center gap-8 bg-gray-100 rounded-xl p-12">
+              <div className="flex flex-col items-center gap-8 bg-gray-100 rounded-xl">
                 <Image
                   src={notFoundImg}
                   width={400}
@@ -123,9 +126,6 @@ export default async function ItemPage({
                   alt="not-found"
                 />
                 <h2>No bids yet</h2>
-                <Button asChild>
-                  <Link href={""}>Place a bid</Link>
-                </Button>
               </div>
             </>
           )}
