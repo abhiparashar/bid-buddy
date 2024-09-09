@@ -58,7 +58,8 @@ export default async function ItemPage({
   return (
     <main className="space-y-4">
       <div className="flex gap-8">
-        <div className="flex flex-col gap-6 bg-gray-100 p-8 h-auto">
+        {/* Fixed height for left side */}
+        <div className="flex flex-col gap-6 bg-gray-100 p-8 h-[600px] max-h-[600px] overflow-y-auto">
           <h1 className={pageTitle}>
             <span className="font-normal">Auction for </span>
             {item.name}
@@ -73,7 +74,7 @@ export default async function ItemPage({
             className="rounded-xl"
           />
           <div className="text-xl space-y-4">
-            Starting Prcie of{" "}
+            Starting Price of{" "}
             <span className="font-bold">
               ${convertToDollar(item.startingPrice)}
             </span>
