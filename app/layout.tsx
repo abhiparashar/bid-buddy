@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Providers from "./Provider";
 import Header from "./components/header";
+import { Providers } from "./Provider";
+import SessionProviders from "./SessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header />
-        <Providers>
-          <div className="container mx-auto py-12">{children}</div>
-        </Providers>
+        <SessionProviders>
+          <Providers>
+            <Header />
+            <div className="container mx-auto py-12">{children}</div>
+          </Providers>
+        </SessionProviders>
       </body>
     </html>
   );

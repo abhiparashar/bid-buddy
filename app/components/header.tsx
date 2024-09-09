@@ -1,13 +1,23 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
 import logo from "../../public/logo.png";
 import SignIn from "./signIn";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 import { SignOut } from "./signOut";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useState } from "react";
+import {
+  NotificationFeedPopover,
+  NotificationIconButton,
+} from "@knocklabs/react";
+import { Button } from "@/components/ui/button";
 
-async function Header() {
-  const session = await auth();
+function Header() {
+  const [isVisible, setIsVisible] = useState(false);
+  const notifButtonRef = useRef(null);
+  const session = useSession();
   return (
     <div className="bg-gray-200 py-2">
       <div className="container flex justify-between items-center">
@@ -36,8 +46,34 @@ async function Header() {
           </Link>
         </div>
         <div className="flex items-center gap-4">
-          <div>{session?.user?.name}</div>
-          <div>{session ? <SignOut /> : <SignIn />}</div>
+          <NotificationIconButton
+            ref={notifButtonRef}
+            onClick={(e) => setIsVisible(!isVisible)}
+          />
+          <NotificationFeedPopover
+            buttonRef={notifButtonRef}
+            isVisible={isVisible}
+            onClose={() => setIsVisible(false)}
+          />
+          <div>{session?.data?.user?.name}</div>
+          <div>
+            {session ? (
+              <Button
+                type="submit"
+                onClick={() =>
+                  signOut({
+                    callbackUrl: "/",
+                  })
+                }
+              >
+                Sign out
+              </Button>
+            ) : (
+              <Button type="submit" onClick={() => signIn()}>
+                Sign in
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
